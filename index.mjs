@@ -4,6 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.mjs';
 import adminRoutes from './routes/adminRoutes.mjs';
+import examRoutes from './routes/examRoutes.mjs';
+import questionRoutes from './routes/questionRoutes.mjs';
 dotenv.config();
 const app = express();
 //import yhe port from .env file
@@ -15,9 +17,14 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
-
+//teacher authentication routes
 app.use('/api/auth', authRoutes);
+//admin routes
 app.use('/api/admin', adminRoutes);
+//exam routes
+ app.use('/api/exam', examRoutes);
+ //question routes
+app.use('/api/questions', questionRoutes);
 //connect to the database
 
 const uri = process.env.MONGO_URI;
