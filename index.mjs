@@ -1,13 +1,16 @@
 import express from 'express';
 import mongoose from 'mongoose';
-const app = express();
-//import yhe port from .env file
+import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/authRoutes.mjs';
 import adminRoutes from './routes/adminRoutes.mjs';
 dotenv.config();
-app.use(express.json());
+const app = express();
+//import yhe port from .env file
 const port = process.env.PORT || 3000;
+app.use(express.json());
+app.use(cors());
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
