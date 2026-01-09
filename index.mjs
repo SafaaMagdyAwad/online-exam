@@ -6,6 +6,9 @@ import authRoutes from './routes/authRoutes.mjs';
 import adminRoutes from './routes/adminRoutes.mjs';
 import examRoutes from './routes/examRoutes.mjs';
 import questionRoutes from './routes/questionRoutes.mjs';
+import reportRoutes from './routes/reportRoutes.mjs';
+import studentRoutes from './routes/studentRoutes.mjs';
+import adminAuthRoutes from './routes/adminAuthRoutes.mjs';
 dotenv.config();
 const app = express();
 //import yhe port from .env file
@@ -19,6 +22,8 @@ app.get('/', (req, res) => {
 
 //teacher authentication routes
 app.use('/api/auth', authRoutes);
+//admin authentication routes
+app.use('/api/auth/admin', adminAuthRoutes);
 //admin routes
 app.use('/api/admin', adminRoutes);
 //exam routes
@@ -26,7 +31,9 @@ app.use('/api/admin', adminRoutes);
  //question routes
 app.use('/api/questions', questionRoutes);
 //connect to the database
-
+app.use('/api/teacher/reports', reportRoutes);
+//student routes
+app.use('/api/student', studentRoutes);
 const uri = process.env.MONGO_URI;
 
 mongoose.connect(uri)

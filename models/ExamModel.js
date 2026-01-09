@@ -24,7 +24,7 @@ const ExamSchema = new mongoose.Schema(
       {
         question: String,
         options: [String],
-        correctAnswer: Number // index
+        correctAnswer: Number // index of the correct answer
       }
     ]
   },

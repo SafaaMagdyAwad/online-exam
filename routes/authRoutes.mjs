@@ -9,4 +9,5 @@ const router = express.Router();
 router.post("/register", registerTeacher);
 router.post("/login", loginTeacher);
 
+
 export default router;
