@@ -17,9 +17,8 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+app.get("/", (req, res) => res.send("Online Exam API is running"));
+
 
 //teacher authentication routes
 app.use('/api/auth', authRoutes);
