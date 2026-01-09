@@ -1,19 +1,24 @@
 import express from "express";
 import {
   enterExam,
-  startExam,
+  startExamAttempt,
+  resumeAttempt,
   submitExam
 } from "../controllers/StudentController.mjs";
 
 const router = express.Router();
 
-// enter exam by code
+// Student enters the exam using code
 router.post("/enter", enterExam);
 
-// start exam
-router.post("/start", startExam);
+// Start exam attempt (one-time only)
+router.post("/start", startExamAttempt);
 
-// submit exam
+// Resume exam (after refresh or disconnect)
+// [عشان لو الطالب رفرش الصفحه ميرجعش العداد من الاول ]
+router.get("/resume", resumeAttempt);
+
+// Submit exam answers
 router.post("/submit", submitExam);
 
 export default router;

@@ -21,6 +21,13 @@ const ExamAccessSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
+    //can be removed if the teacher wants unlimited access
+    allowedStudents: [
+      {
+        name: String,
+        studentCode: String
+      }
+    ],
     expiresAt: Date
   },
   { timestamps: true }

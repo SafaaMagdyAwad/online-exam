@@ -9,6 +9,7 @@ import questionRoutes from './routes/questionRoutes.mjs';
 import reportRoutes from './routes/reportRoutes.mjs';
 import studentRoutes from './routes/studentRoutes.mjs';
 import adminAuthRoutes from './routes/adminAuthRoutes.mjs';
+import studentAttemptRouter from './routes/studentAttemptRouter.mjs';
 dotenv.config();
 const app = express();
 //import yhe port from .env file
@@ -34,6 +35,9 @@ app.use('/api/questions', questionRoutes);
 app.use('/api/teacher/reports', reportRoutes);
 //student routes
 app.use('/api/student', studentRoutes);
+
+//filter students
+app.use('/api/teacher', studentAttemptRouter);
 const uri = process.env.MONGO_URI;
 
 mongoose.connect(uri)

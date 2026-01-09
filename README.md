@@ -1,261 +1,135 @@
+Online Exam Platform - README
+📌 Project Overview
 
-# Online Exam System (نظام الامتحانات الإلكتروني)
+Online Exam Platform is a secure and flexible system for managing electronic exams.
+It allows teachers to create exams, add students, and control who can take which exam. Students can enter exams using their name + code, complete the exam, and receive their grades automatically.
 
-## Overview (نظرة عامة)
-صفحه ويب باللغه العربيه
-هذا المشروع عبارة عن **نظام امتحانات إلكتروني** يسمح للمدرسين بإنشاء امتحانات وإدارة طلابهم، بينما يمكن للطلاب دخول الامتحانات باستخدام **كود دخول** يتم إنشاؤه بواسطة المدرس.  
-الطلاب لا يحتاجون لإنشاء حسابات، وكل البيانات الأساسية تُسجّل عند دخول الامتحان فقط.
+This project is built using:
 
----
+Backend: Node.js + Express
 
-## Features (الميزات)
+Database: MongoDB
 
-### للمدرس
-- تسجيل حساب دائم مع دفع لأول مرة   done
-- إنشاء امتحانات (Exam) متعددة  done
-- إضافة أسئلة وإجابات لكل امتحان  done
-- توليد **كود دخول** لكل امتحان أو مجموعة طلاب    done
-- مشاهدة تقارير أداء الطلاب   [TODO : the code is not yet tried]
-- تصفية نتائج الطلاب حسب الاسم أو الدرجة أو التاريخ
-- السيطرة الكاملة على من يدخل امتحاناته (الطلاب المعتمدين فقط)
+Authentication: JWT for teachers/admin
 
-### للطالب
-- الدخول باستخدام **اسمه + كود الامتحان**
-- لا يحتاج لحساب
-- دخول امتحان مرة واحدة فقط
-- الحصول على الدرجة بعد انتهاء الامتحان
+Frontend: React (planned)
 
-## admin (safaa)
-- adminlogin
-- can modify teacher status to paid    done
----
+📝 Key Features
+1. Teacher Features
 
-## System Architecture (معمارية النظام)
+Create exams and define duration, questions, and total marks.
 
-### Schemas
+Add a list of students for a specific exam.
 
-#### 1. Teacher
-- يمثل المدرس
-- Schema:
-```json
-{
-  "_id": ObjectId,
-  "name": String,
-  "email": String,
-  "password": String (hashed),
-  "paid": Boolean,
-  "createdAt": Date,
-  "updatedAt": Date
-}
+Generate unique student codes for exam access.
 
-2. Exam
+Print or export the list of students + codes.
 
-يمثل الامتحان نفسه
+View and filter student performance reports (by name, grade, or date).
 
-Schema:
+Control exam access: only authorized students can enter.
 
-{
-  "_id": ObjectId,
-  "title": String,
-  "teacherId": ObjectId,
-  "duration": Number (minutes),
-  "totalMarks": Number,
-  "active": Boolean,
-  "questions": [
-    { "question": String, "options": [String], "correctAnswer": Number }
-  ],
-  "createdAt": Date,
-  "updatedAt": Date
-}
+2. Student Features
 
-3. ExamAccessCode
+Students enter exams using their name + unique code.
 
-كود الدخول الذي يعطيه المدرس للطلاب
+Can only attempt each exam once.
 
-Schema:
+Resume attempts after refresh: the remaining time is calculated automatically.
 
-{
-  "_id": ObjectId,
-  "code": String,
-  "examId": ObjectId,
-  "teacherId": ObjectId,
-  "active": Boolean,
-  "expiresAt": Date,
-  "createdAt": Date,
-  "updatedAt": Date
-}
+Automatic grade calculation after submitting the exam.
 
-4. StudentAttempt
+3. Admin Features
 
-يمثل محاولة الطالب للامتحان
+Admin can manage teachers and exams.
 
-Schema:
+Admin authentication to access protected endpoints.
 
-{
-  "_id": ObjectId,
-  "studentName": String,
-  "examId": ObjectId,
-  "teacherId": ObjectId,
-  "code": String,
-  "answers": [
-    { "questionIndex": Number, "answer": Number }
-  ],
-  "score": Number,
-  "startedAt": Date,
-  "finishedAt": Date,
-  "createdAt": Date,
-  "updatedAt": Date
-}
+🏗️ Project Structure
+/models        # Mongoose models: Teacher, Student, Exam, ExamAccess, StudentAttempt
+/controllers   # Express controllers for teacher, student, admin
+/services      # Business logic (ExamService, StudentService, TeacherService)
+/routes        # Express routes
+/middleware    # Authentication and authorization middleware
+/scripts       # Scripts for creating initial admin, etc.
 
-Flow (سير النظام)
-Teacher Flow
+🔑 Student Exam Flow
 
-تسجيل حساب جديد + دفع لأول مرة
+Teacher adds students to an exam and generates their codes.
 
-إنشاء امتحان
+Students enter the exam using name + code.
 
-إضافة أسئلة وإجابات
+System verifies the student is authorized for the exam.
 
-إنشاء كود دخول للطلاب
+Student starts the exam: attempt is created, start time recorded.
 
-مشاركة الكود مع الطلاب
+Student submits answers: score is calculated automatically.
 
-بعد انتهاء الامتحانات، مشاهدة تقارير الأداء
+Teacher can view reports and filter results.
 
-Student Flow
+⚡ Important Notes / TODO
 
-يدخل الاسم + كود الامتحان
+Tomorrow: The enterExam function will be updated to only require the student name.
 
-يبدأ الامتحان
+The student code will no longer be needed in the startExamAttempt function, simplifying login.
 
-يظهر له Timer حسب مدة الامتحان
+This change will make it easier for students to access exams while keeping the teacher in control of authorization.
 
-يجيب على الأسئلة
+🛠️ How to Run the Project
 
-عند الانتهاء، تظهر له الدرجة مباشرة
+Clone the repository:
 
-لا يمكنه إعادة الدخول بنفس الكود
+git clone <repo_url>
+cd online-exam
 
-APIs (واجهة برمجة التطبيقات)
-Teacher
 
-POST /api/auth/register → تسجيل المدرس
+Install dependencies:
 
-POST /api/auth/login → تسجيل الدخول للمدرس
-
-POST /api/teacher/exams → إنشاء امتحان
-
-POST /api/teacher/exams/:examId/code → إنشاء كود دخول
-
-GET /api/teacher/reports/:examId → مشاهدة أداء الطلاب
-
-Student
-
-POST /api/student/login → دخول الطالب باستخدام الكود
-
-GET /api/student/exam/:code → جلب بيانات الامتحان
-
-POST /api/student/exam/:code/submit → إرسال إجابات الطالب
-
-Security (الأمان)
-
-كلمات السر مشفرة باستخدام bcrypt
-
-JWT لتوثيق المدرس (Teacher Auth)
-
-كود الامتحان يمنع الدخول المتكرر
-
-الطالب لا يحتاج لحساب دائم → حماية البيانات الشخصية
-
-المدرسين معزولين عن بعض
-
-كل امتحان مرتبط بالمدرس فقط
-
-Technologies Used (التقنيات المستخدمة)
-
-Node.js
-
-Express.js
-
-MongoDB + Mongoose
-
-bcryptjs (لتشفير الباسورد)
-
-JSON Web Token (JWT)
-
-Postman / REST API لاختبار الخدمات
-
-Project Structure (هيكل المشروع)
-/controllers
-    AuthController.js
-    ExamController.js
-    StudentController.js
-/models
-    Teacher.js
-    Exam.js
-    ExamAccess.js
-    StudentAttempt.js
-/routes
-    authRoutes.js
-    teacherRoutes.js
-    studentRoutes.js
-/app.js
-/server.js
-/.env
-
-Environment Variables (.env)
-PORT=5000
-MONGO_URI=mongodb://localhost:27017/online-exam
-JWT_SECRET=super_secret_key_123
-
-How to Run (طريقة التشغيل)
-git clone <repo-url>
-cd online-exam-system
 npm install
-npm run dev
 
 
-يستخدم nodemon للتطوير
+Set up .env with:
 
-الخادم يعمل على http://localhost:5000
-
-Notes (ملاحظات هامة)
-
-كل الطلاب مرتبطون بالمدرسين عن طريق كود دخول
-
-الطلاب لا يسجلون بياناتهم بشكل دائم
-
-الكود يمكن للمدرس التحكم فيه (تفعيل/تعطيل، انتهاء صلاحية)
-
-يمنع الطالب من الدخول أكثر من مرة
-
-التقارير يمكن تصفيتها حسب الاسم، الدرجة، التاريخ
-
-Future Improvements (تحسينات مستقبلية)
-
-إضافة Timer Backend مع WebSocket
-
-إمكانية طباعة التقرير بصيغة PDF
-
-إرسال إشعارات للطلاب عند إنشاء امتحان
-
-دعم أسئلة متعددة الأنواع (اختيار من متعدد، صح/خطأ، مقالي)
+PORT=3000
+MONGO_URI=<your_mongo_connection_string>
+JWT_SECRET=<your_secret_key>
 
 
+Start the server:
 
-##  حماية إضافية (اختيارية لكنها قوية)
-✅ 1. Lock Device
-deviceId: String
+nodemon server.js
 
 
-وتقارنها في كل Request
+Use Postman or frontend React app to test API endpoints:
 
-✅ 2. IP Tracking
+Teacher routes: /api/teacher/...
 
-لو IP اتغير → Warning / Lock
+Student routes: /api/student/...
 
-✅ 3. Prevent Multiple Tabs
+Admin routes: /api/admin/...
 
-نفس attemptId
+📦 Dependencies
 
-نفس الوقت
+express
+
+mongoose
+
+dotenv
+
+jsonwebtoken
+
+bcryptjs
+
+nodemon (dev dependency)
+
+✅ Security & Features
+
+JWT-based authentication for teachers and admins.
+
+Validation on all input fields.
+
+Prevent multiple attempts per student per exam.
+
+Automatic calculation of remaining exam time on refresh.
+
+Full reports exportable and printable for teachers.
