@@ -15,7 +15,11 @@ const app = express();
 //import yhe port from .env file
 const port = process.env.PORT || 3000;
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: "*", // or your frontend URL
+  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+}));
 
 app.get("/", (req, res) => res.json({ message: "API is running..." }));
 
