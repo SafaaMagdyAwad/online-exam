@@ -6,7 +6,7 @@ import StudentAttempt from "../models/StudentAttempt.js";
  * Enter exam by code
  * Returns exam info and teacherId
  */
-export const enterExamService = async (studentName, code) => {
+export const enterExamService = async (code) => {
   const access = await ExamAccess.findOne({
     code,
     active: true

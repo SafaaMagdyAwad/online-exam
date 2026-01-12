@@ -10,8 +10,8 @@ import {
  */
 export const enterExam = async (req, res) => {
   try {
-    const { studentName, code } = req.body;
-    const data = await enterExamService(studentName, code);
+    const {  code } = req.body;
+    const data = await enterExamService( code);
     res.json(data);
   } catch (error) {
     res.status(400).json({ message: error.message });

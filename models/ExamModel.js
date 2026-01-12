@@ -15,11 +15,19 @@ const ExamSchema = new mongoose.Schema(
       type: Number, // بالدقائق
       required: true
     },
-    totalMarks: Number,
+    totalMarks: {
+      type: Number,
+      required: true
+    },
     active: {
       type: Boolean,
       default: true
     },
+    instructions: {
+      type: String,
+      required: false
+    },
+    
     questions: [
       {
         question: String,

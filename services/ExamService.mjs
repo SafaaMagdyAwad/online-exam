@@ -27,6 +27,9 @@ export const generateExamCodeService = async (teacherId, examId) => {
 
   return accessCode;
 };
+export const getExamByIdService = async (teacherId, examId) => {
+  return await Exam.findOne({ _id: examId, teacherId });
+};
 
 /**
  * Get exams for teacher
