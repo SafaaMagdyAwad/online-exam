@@ -11,9 +11,7 @@ const StudentAttemptSchema = new mongoose.Schema(
       ref: "Exam",
       required: true
     },
-    phone: {
-      type: String,
-    },
+    
     teacherId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Teacher",

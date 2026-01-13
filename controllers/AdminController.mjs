@@ -9,7 +9,7 @@ export const updateTeacherPaidStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { paid } = req.body;
-console.log(paid,"paid from controller");
+//console.log(paid,"paid from controller");
 
     // 1️⃣ Validate request
     if (typeof paid !== "boolean") {

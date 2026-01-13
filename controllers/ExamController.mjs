@@ -49,7 +49,7 @@ export const generateExamCode = async (req, res) => {
 export const getExamById = async (req, res) => {
   try {
     const { examId } = req.params;
-    const exam = await getExamByIdService(req.user.id, examId);
+    const exam = await getExamByIdService( examId);
     if (!exam) {
       return res.status(404).json({ message: "Exam not found" });
     }
@@ -77,13 +77,13 @@ export const updateExamById = async (req, res) => {
     const { examId } = req.params;
     const updateData = req.body;
     const exam = await getExamByIdService(req.user.id, examId);
-    console.log(exam , "exam from update ");
+   // console.log(exam , "exam from update ");
     
     if (!exam) {
       return res.status(404).json({ message: "Exam not found" });
     }
     Object.assign(exam, updateData);
-    console.log("updated exam", exam);
+    //console.log("updated exam", exam);
     
     await exam.save();
     res.json({ message: "Exam updated successfully", exam });
@@ -102,7 +102,7 @@ export const updateExamVById = async (req, res) => {
       return res.status(404).json({ message: "Exam not found" });
     }
     const updateData = !exam.active;
-    console.log("update Data", updateData);
+    //console.log("update Data", updateData);
     
     Object.assign(exam, {active: updateData});
     // console.log("updated exam", exam);

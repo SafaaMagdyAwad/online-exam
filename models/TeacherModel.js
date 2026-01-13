@@ -29,6 +29,16 @@ const TeacherSchema = new mongoose.Schema(
     paid: {
       type: Boolean,
       default: false
+    },
+    phone: {
+      type: String,
+    },
+    logo: {
+      type: String,
+    },
+    jopTitle:{
+      type:String,
+      required:true
     }
   },
   { timestamps: true }

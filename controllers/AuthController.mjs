@@ -19,9 +19,9 @@ const generateToken = (id) => {
  */
 export const registerTeacher = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password,jopTitle} = req.body;
 
-    console.log(name,"from controller");
+    //console.log(name,"from controller");
     
     // 1️⃣ Validation
     if (!name || !email || !password) {
@@ -47,7 +47,8 @@ export const registerTeacher = async (req, res) => {
     const teacher = await Teacher.create({
       name,
       email,
-      password
+      password,
+      jopTitle,
     });
 
     // 4️⃣ Response
@@ -58,6 +59,7 @@ export const registerTeacher = async (req, res) => {
         id: teacher._id,
         name: teacher.name,
         email: teacher.email,
+        jopTitle:teacher.jopTitle,
         paid: teacher.paid
       }
     });
@@ -90,7 +92,7 @@ export const loginTeacher = async (req, res) => {
     const teacher = await Teacher
       .findOne({ email })
       .select("+password");
-    console.log(teacher,"from login controller");
+    //console.log(teacher,"from login controller");
     if (!teacher) {
       return res.status(401).json({
         message: "Invalid email or password"
@@ -99,8 +101,8 @@ export const loginTeacher = async (req, res) => {
 
     // 3️⃣ Compare password
     const isMatch = await teacher.comparePassword(password);
-    console.log(isMatch,"is match");
-    console.log(teacher.paid,"teacher paid");
+    //console.log(isMatch,"is match");
+    //console.log(teacher.paid,"teacher paid");
     if (!isMatch) {
       return res.status(401).json({
         message: "Invalid email or password"

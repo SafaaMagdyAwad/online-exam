@@ -35,9 +35,9 @@ app.use('/api/auth/admin', adminAuthRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/exam', examRoutes);
 app.use('/api/questions', questionRoutes);
+app.use('/api/teacher', studentAttemptRouter);
 app.use('/api/teacher/reports', reportRoutes);
 app.use('/api/student', studentRoutes);
-app.use('/api/teacher', studentAttemptRouter);
 
 // MongoDB connection
 const uri = process.env.MONGO_URI;

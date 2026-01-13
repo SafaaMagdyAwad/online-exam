@@ -12,6 +12,9 @@ import authTeacher from "../middlewares/authTeacher.mjs";
 
 const router = express.Router();
 
+
+//get exam by id
+router.get("/:examId", getExamById);
 router.use(authTeacher);
 
 // Create exam
@@ -19,9 +22,6 @@ router.post("/", createExam);
 
 // Get teacher exams
 router.get("/", getMyExams);
-
-//get exam by id
-router.get("/:examId", getExamById);
 
 //update exam by id
 router.put("/:examId", updateExamById);
