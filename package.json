@@ -2,12 +2,12 @@
   "name": "online-exam",
   "version": "1.0.0",
   "description": "",
-  "main": "api/index.mjs",
+  "main": "index.mjs",
   "type": "module",
  
   "scripts": {
-    "dev": "nodemon api/index.mjs",
-  "start": "node api/index.mjs"
+    "dev": "nodemon index.mjs",
+  "start": "node index.mjs"
   },
   "keywords": [],
   "author": "",

@@ -1,4 +1,3 @@
-// api/index.js
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -6,14 +5,14 @@ import dotenv from 'dotenv';
 import serverless from 'serverless-http';
 
 // import routes
-import authRoutes from '../routes/authRoutes.mjs';
-import adminRoutes from '../routes/adminRoutes.mjs';
-import examRoutes from '../routes/examRoutes.mjs';
-import questionRoutes from '../routes/questionRoutes.mjs';
-import reportRoutes from '../routes/reportRoutes.mjs';
-import studentRoutes from '../routes/studentRoutes.mjs';
-import adminAuthRoutes from '../routes/adminAuthRoutes.mjs';
-import studentAttemptRouter from '../routes/studentAttemptRouter.mjs';
+import authRoutes from './routes/authRoutes.mjs';
+import adminRoutes from './routes/adminRoutes.mjs';
+import examRoutes from './routes/examRoutes.mjs';
+import questionRoutes from './routes/questionRoutes.mjs';
+import reportRoutes from './routes/reportRoutes.mjs';
+import studentRoutes from './routes/studentRoutes.mjs';
+import adminAuthRoutes from './routes/adminAuthRoutes.mjs';
+import studentAttemptRouter from './routes/studentAttemptRouter.mjs';
 
 dotenv.config();
 
