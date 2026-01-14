@@ -9,14 +9,19 @@ import {
  */
 export const getExamReport = async (req, res) => {
   try {
-    const attempts = await getExamReportService(
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+
+    const { attempts, totalCount } = await getExamReportService(
       req.user.id,
       req.params.examId,
-      req.query
+      req.query,
+      page,
+      limit
     );
 
     res.json({
-      count: attempts.length,
+      count: totalCount, // إجمالي عدد الطلاب
       results: attempts
     });
   } catch (error) {

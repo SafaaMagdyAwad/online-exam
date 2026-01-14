@@ -7,14 +7,16 @@ import mongoose from "mongoose";
 export const getExamReportService = async (
   teacherId,
   examId,
-  filters
+  filters,
+  page = 1,
+  limit = 5
 ) => {
   const query = {
     teacherId,
     examId
   };
 
-  // 🔍 search by student name
+  // 🔍 البحث باسم الطالب
   if (filters.name) {
     query.studentName = {
       $regex: filters.name,
@@ -22,30 +24,31 @@ export const getExamReportService = async (
     };
   }
 
-  // 🎯 score range
+  // 🎯 نطاق الدرجات
   if (filters.minScore || filters.maxScore) {
     query.score = {};
-    if (filters.minScore)
-      query.score.$gte = Number(filters.minScore);
-    if (filters.maxScore)
-      query.score.$lte = Number(filters.maxScore);
+    if (filters.minScore) query.score.$gte = Number(filters.minScore);
+    if (filters.maxScore) query.score.$lte = Number(filters.maxScore);
   }
 
-  // 📅 date range
+  // 📅 نطاق التاريخ
   if (filters.from || filters.to) {
     query.createdAt = {};
-    if (filters.from)
-      query.createdAt.$gte = new Date(filters.from);
-    if (filters.to)
-      query.createdAt.$lte = new Date(filters.to);
+    if (filters.from) query.createdAt.$gte = new Date(filters.from);
+    if (filters.to) query.createdAt.$lte = new Date(filters.to);
   }
+
+  const totalCount = await StudentAttempt.countDocuments(query); // إجمالي عدد النتائج
 
   const attempts = await StudentAttempt.find(query)
     .select("studentName score startedAt finishedAt")
-    .sort({ score: -1 });
+    .sort({ score: -1 })
+    .skip((page - 1) * limit) // تخطي الصفوف حسب الصفحة
+    .limit(limit);            // عدد الصفوف لكل صفحة
 
-  return attempts;
+  return { attempts, totalCount };
 };
+
 
 /**
  * Get exam statistics
