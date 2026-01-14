@@ -118,12 +118,12 @@ export const updateExamVById = async (req, res) => {
 export const deleteExam = async (req, res) => {
   try {
     const { examId } = req.params;
-    const exam = await getExamByIdService(req.user.id, examId);
+    const exam = await getExamByIdService(examId); // ✅ will now return the exam
     if (!exam) {
       return res.status(404).json({ message: "Exam not found" });
     }
     await exam.deleteOne();
-    res.json({ message: "Exam deleted successfully" , exam: exam});
+    res.status(200).json({ message: "Exam deleted successfully", exam });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

@@ -27,16 +27,17 @@ export const generateExamCodeService = async (teacherId, examId) => {
 
   return accessCode;
 };
+
 export const getExamByIdService = async (examId) => {
   try {
-    const exam = await Exam.findById(examId);
+    const exam = await Exam.findById(examId); // ✅ valid _id now
+    console.log(exam, "exam");
     return exam;
   } catch (error) {
     console.error("Error fetching exam:", error);
     throw error;
   }
 };
-
 
 /**
  * Get exams for teacher
