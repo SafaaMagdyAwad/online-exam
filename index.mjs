@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import serverless from 'serverless-http';
 
-// import routes
+// routes
 import authRoutes from './routes/authRoutes.mjs';
 import adminRoutes from './routes/adminRoutes.mjs';
 import examRoutes from './routes/examRoutes.mjs';
@@ -20,15 +20,17 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: "*", 
-  allowedHeaders: ["Content-Type", "Authorization"],
+  origin: "*",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// test route
-app.get("/", (req, res) => res.json({ message: "API is running..." }));
+// Test route
+app.get("/", (req, res) => {
+  res.json({ message: "API is running..." });
+});
 
-// routes
+// Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/auth/admin', adminAuthRoutes);
 app.use('/api/admin', adminRoutes);
@@ -38,15 +40,18 @@ app.use('/api/teacher', studentAttemptRouter);
 app.use('/api/teacher/reports', reportRoutes);
 app.use('/api/student', studentRoutes);
 
-// MongoDB connection
-const uri = process.env.MONGO_URI;
-mongoose.connect(uri)
-    .then(() => console.log('MongoDB connected ✅'))
-    .catch(err => console.error('MongoDB connection error ❌', err));
+// MongoDB connection (reuse)
+let isConnected = false;
 
+async function connectDB() {
+  if (isConnected) return;
+  await mongoose.connect(process.env.MONGO_URI);
+  isConnected = true;
+  console.log("MongoDB connected ✅");
+}
 
-  const port = process.env.PORT || 3000;
-  app.listen(port, () => {
-    console.log(`Server running on http://localhost:${port}`);
-  });
+connectDB();
 
+// ❌ DO NOT use app.listen()
+// ✅ Export serverless handler
+export default serverless(app);
