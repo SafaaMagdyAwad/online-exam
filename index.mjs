@@ -35,5 +35,5 @@ mongoose.connect(uri)
   .then(() => console.log('MongoDB connected ✅'))
   .catch(err => console.error('MongoDB connection error ❌', err));
 const port = process.env.PORT || 3000;
-// app.listen(port, () => { console.log(`Server running on http://localhost:${port}`); });
-export default app;
+app.listen(port, () => { console.log(`Server running on http://localhost:${port}`); });
+// export default app;

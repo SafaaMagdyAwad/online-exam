@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "type": "module",
   "main": "index.mjs",
+  "engines": {
+    "node":"18.x"
+  },
   "scripts": {
     "dev": "nodemon index.mjs",
     "start": "node index.mjs"
