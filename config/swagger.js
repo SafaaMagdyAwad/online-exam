@@ -1,5 +1,9 @@
-// swagger.js
 import swaggerJSDoc from "swagger-jsdoc";
+import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const swaggerOptions = {
   definition: {
@@ -11,14 +15,13 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'https://online-exam-lemon.vercel.app', // Your production URL
+        url: 'https://online-exam-lemon.vercel.app',
         description: 'Production server',
       },
-    
     ],
   },
-  // Point to your route files for swagger comments
-  apis: ["./routes/*.mjs"], 
+  // Use path.join to create an absolute path to your routes
+  apis: [path.join(__dirname, "../routes/*.mjs")], 
 };
 
 const swaggerSpec = swaggerJSDoc(swaggerOptions);

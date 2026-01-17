@@ -13,6 +13,7 @@ import studentRoutes from './routes/studentRoutes.mjs';
 import studentAttemptRouter from './routes/studentAttemptRouter.mjs';
 import swaggerUi from "swagger-ui-express";
 import swaggerSpec from "./config/swagger.js";
+const CSS_URL = "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css";
 
 
 dotenv.config();
@@ -37,8 +38,17 @@ app.use('/api/questions', questionRoutes);
 app.use('/api/teacher/reports', reportRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/teacher', studentAttemptRouter);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customCssUrl: CSS_URL,
+    customJs: [
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.min.js',
+      'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.min.js',
+    ],
+  })
+);
 // MongoDB connection
 const uri = process.env.MONGO_URI;
 mongoose.connect(uri)
