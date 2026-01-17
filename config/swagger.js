@@ -1,35 +1,23 @@
+// swagger.js
 import swaggerJSDoc from "swagger-jsdoc";
 
-const options = {
+const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
     info: {
-      title: "Online Exam System API",
+      title: "Online Exam API",
       version: "1.0.0",
-      description: "RESTful API for Online Exam Platform",
+      description: "API documentation for Online Exam project",
     },
     servers: [
       {
         url: "http://localhost:3000",
       },
     ],
-    components: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT",
-        },
-      },
-    },
-    security: [
-      {
-        bearerAuth: [],
-      },
-    ],
   },
-  apis: ["./routes/*.mjs"], // عدّل حسب مكان routes
+  // Point to your route files for swagger comments
+  apis: ["./routes/*.mjs"], 
 };
 
-const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = swaggerJSDoc(swaggerOptions);
 export default swaggerSpec;
