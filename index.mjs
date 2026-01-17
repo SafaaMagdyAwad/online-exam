@@ -12,6 +12,9 @@ import questionRoutes from './routes/questionRoutes.mjs';
 import reportRoutes from './routes/reportRoutes.mjs';
 import studentRoutes from './routes/studentRoutes.mjs';
 import studentAttemptRouter from './routes/studentAttemptRouter.mjs';
+import swaggerUi from "swagger-ui-express";
+import swaggerSpec from "./config/swagger.js";
+
 
 dotenv.config();
 
@@ -35,6 +38,7 @@ app.use('/api/questions', questionRoutes);
 app.use('/api/teacher/reports', reportRoutes);
 app.use('/api/student', studentRoutes);
 app.use('/api/teacher', studentAttemptRouter);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // MongoDB connection
 const uri = process.env.MONGO_URI;
