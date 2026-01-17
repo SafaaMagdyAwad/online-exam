@@ -11,8 +11,10 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:3000",
+        url: 'https://online-exam-lemon.vercel.app', // Your production URL
+        description: 'Production server',
       },
+    
     ],
   },
   // Point to your route files for swagger comments
