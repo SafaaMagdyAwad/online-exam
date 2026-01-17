@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "type": "module",
   "main": "index.mjs",
-  "engines": {
-    "node": "24.x"
-  },
+ 
   "scripts": {
     "dev": "nodemon index.mjs",
     "start": "node index.mjs"
