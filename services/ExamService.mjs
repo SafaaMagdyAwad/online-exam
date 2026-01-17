@@ -30,7 +30,7 @@ export const generateExamCodeService = async (teacherId, examId) => {
 
 export const getExamByIdService = async (examId) => {
   try {
-    const exam = await Exam.findById(examId); // ✅ valid _id now
+    const exam = await Exam.findById(examId); 
     console.log(exam, "exam");
     return exam;
   } catch (error) {

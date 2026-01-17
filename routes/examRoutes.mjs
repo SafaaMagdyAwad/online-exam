@@ -15,6 +15,7 @@ const router = express.Router();
 
 //get exam by id
 router.get("/:examId", getExamById);
+
 router.use(authTeacher);
 
 // Create exam

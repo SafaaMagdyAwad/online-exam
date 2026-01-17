@@ -4,9 +4,11 @@ import jwt from "jsonwebtoken";
 /**
  * Generate JWT Token
  */
-const generateToken = (id) => {
+const generateToken = (id, role) => {
   return jwt.sign(
-    { id },
+    { id ,role  },
+   
+    
     process.env.JWT_SECRET,
     { expiresIn: "7d" }
   );
@@ -50,11 +52,12 @@ export const registerTeacher = async (req, res) => {
       password,
       jopTitle,
     });
-
+    
+    teacher.role ??= "teacher";
     // 4️⃣ Response
     res.status(201).json({
       message: "Teacher registered successfully",
-      token: generateToken(teacher._id),
+      token: generateToken(teacher._id ,teacher.role),
       teacher: {
         id: teacher._id,
         name: teacher.name,
@@ -112,7 +115,7 @@ export const loginTeacher = async (req, res) => {
     // 4️⃣ Success response
     res.status(200).json({
       message: "Login successful",
-      token: generateToken(teacher._id),
+      token: generateToken(teacher._id, teacher.role),
       teacher: {
         id: teacher._id,
         name: teacher.name,

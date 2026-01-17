@@ -76,8 +76,8 @@ export const updateExamById = async (req, res) => {
   try {
     const { examId } = req.params;
     const updateData = req.body;
-    const exam = await getExamByIdService(req.user.id, examId);
-   // console.log(exam , "exam from update ");
+    const exam = await getExamByIdService( examId);
+   console.log(exam , "exam from update ");
     
     if (!exam) {
       return res.status(404).json({ message: "Exam not found" });
@@ -92,6 +92,8 @@ export const updateExamById = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+// update the exam activ
 export const updateExamVById = async (req, res) => {
   try {
     const { examId } = req.params;
@@ -118,7 +120,7 @@ export const updateExamVById = async (req, res) => {
 export const deleteExam = async (req, res) => {
   try {
     const { examId } = req.params;
-    const exam = await getExamByIdService(examId); // ✅ will now return the exam
+    const exam = await getExamByIdService(examId); 
     if (!exam) {
       return res.status(404).json({ message: "Exam not found" });
     }
