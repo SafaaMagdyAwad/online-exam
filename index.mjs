@@ -2,7 +2,6 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import serverless from 'serverless-http';
 
 // import routes
 import authRoutes from './routes/authRoutes.mjs';
@@ -46,8 +45,13 @@ mongoose.connect(uri)
     .then(() => console.log('MongoDB connected ✅'))
     .catch(err => console.error('MongoDB connection error ❌', err));
 
+// Only listen if not running on Vercel
+if (process.env.NODE_ENV !== 'production') {
   const port = process.env.PORT || 3000;
   app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
   });
+}
 
+// FIX: Use export default instead of module.exports
+export default app;
