@@ -2,7 +2,8 @@ import {
   createExamService,
   generateExamCodeService,
   getTeacherExamsService,
-  getExamByIdService
+  getExamByIdService,
+  toggleExamStatusService
 } from "../services/ExamService.mjs";
 
 /**
@@ -49,7 +50,7 @@ export const generateExamCode = async (req, res) => {
 export const getExamById = async (req, res) => {
   try {
     const { examId } = req.params;
-    const exam = await getExamByIdService( examId);
+    const exam = await getExamByIdService(examId);
     if (!exam) {
       return res.status(404).json({ message: "Exam not found" });
     }
@@ -115,23 +116,21 @@ export const updateExamById = async (req, res) => {
 export const updateExamVById = async (req, res) => {
   try {
     const { examId } = req.params;
-    const exam = await getExamByIdService(req.user.id, examId);
-    // console.log(exam , "exam from update ");
     
-    if (!exam) {
+    const updatedExam = await toggleExamStatusService(examId);
+
+    if (!updatedExam) {
       return res.status(404).json({ message: "Exam not found" });
     }
-    const updateData = !exam.active;
-    //console.log("update Data", updateData);
+
+    res.json({ 
+      message: `Exam is now ${updatedExam.active ? 'active' : 'inactive'}`, 
+      exam: updatedExam 
+    });
     
-    Object.assign(exam, {active: updateData});
-    // console.log("updated exam", exam);
-    
-    await exam.save();
-    res.json({ message: "Exam updated successfully", exam });
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Server error" });
+    console.error("Controller Error:", error.message);
+    res.status(500).json({ message: error.message || "Server error" });
   }
 };
 

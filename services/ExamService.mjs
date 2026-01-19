@@ -1,6 +1,7 @@
 import Exam from "../models/ExamModel.js";
 import ExamAccess from "../models/ExamAccessCodeModel.js";
 import crypto from "crypto";
+import mongoose from "mongoose";
 
 /**
  * Create new exam
@@ -27,16 +28,43 @@ export const generateExamCodeService = async (teacherId, examId) => {
 
   return accessCode;
 };
-
 export const getExamByIdService = async (examId) => {
   try {
-    const exam = await Exam.findById(examId); 
-    console.log(exam, "exam");
+    // 1. Validate if examId exists/is valid before querying
+    if (!examId) {
+      throw new Error("No Exam ID provided");
+    }
+
+    // 2. findById is the shorthand for findOne({ _id: id })
+    const exam = await Exam.findById(examId.toString().trim()); //null
+
+    if (!exam) {
+      console.warn(`No exam found with ID: ${examId}`);
+    }
+
     return exam;
   } catch (error) {
     console.error("Error fetching exam:", error);
     throw error;
   }
+};
+
+
+export const toggleExamStatusService = async (examId) => {
+  // Validate ID format to prevent Mongoose "CastError"
+  if (!mongoose.Types.ObjectId.isValid(examId)) {
+    throw new Error("Invalid Exam ID format");
+  }
+
+  // Find the exam first to see its current state
+  const exam = await Exam.findById(examId);
+  console.log(exam);
+  
+  if (!exam) return null;
+
+  // Toggle and save
+  exam.active = !exam.active;
+  return await exam.save();
 };
 
 /**
