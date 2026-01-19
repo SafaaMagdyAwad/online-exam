@@ -42,6 +42,14 @@ export const getExamByIdService = async (examId) => {
 /**
  * Get exams for teacher
  */
-export const getTeacherExamsService = async (teacherId) => {
-  return await Exam.find({ teacherId });
+export const getTeacherExamsService = async (teacherId, skip, limit) => {
+  const [exams, total] = await Promise.all([
+    Exam.find({ teacherId })
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 }),
+    Exam.countDocuments({ teacherId }),
+  ]);
+
+  return { exams, total };
 };

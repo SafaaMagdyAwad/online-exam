@@ -65,12 +65,30 @@ export const getExamById = async (req, res) => {
  */
 export const getMyExams = async (req, res) => {
   try {
-    const exams = await getTeacherExamsService(req.user.id);
-    res.json({ exams });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const { exams, total } = await getTeacherExamsService(
+      req.user.id,
+      skip,
+      limit
+    );
+
+    res.json({
+      exams,
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 export const updateExamById = async (req, res) => {
   try {
