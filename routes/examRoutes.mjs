@@ -72,6 +72,65 @@ router.use(authTeacher);
 router.post("/", createExam);
 
 // Get teacher exams
+/**
+ * @swagger
+ * /api/exam:
+ *   get:
+ *     summary: Get teacher exams with pagination
+ *     description: Returns paginated exams created by the authenticated teacher
+ *     tags:
+ *       - Exams
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: page
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 1
+ *         description: Page number
+ *       - in: query
+ *         name: limit
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           default: 5
+ *         description: Number of exams per page
+ *     responses:
+ *       200:
+ *         description: Exams fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 exams:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Exam'
+ *                 pagination:
+ *                   type: object
+ *                   properties:
+ *                     total:
+ *                       type: integer
+ *                       example: 23
+ *                     page:
+ *                       type: integer
+ *                       example: 1
+ *                     limit:
+ *                       type: integer
+ *                       example: 5
+ *                     totalPages:
+ *                       type: integer
+ *                       example: 5
+ *       401:
+ *         description: Unauthorized
+ *       500:
+ *         description: Server error
+ */
+router.get("/", getMyExams);
+
 router.get("/", getMyExams);
 
 //update exam by id
