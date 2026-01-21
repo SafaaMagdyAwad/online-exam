@@ -21,10 +21,22 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+
+const allowedOrigins = [
+  "http://localhost:5173",       // your dev frontend
+  "https://online-exam-front.vercel.app" // production frontend
+];
+
 app.use(cors({
-  origin: "*", 
-  allowedHeaders: ["Content-Type", "Authorization"],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  origin: function(origin, callback){
+    if (!origin) return callback(null, true); // allow non-browser requests like Postman
+    if (allowedOrigins.indexOf(origin) === -1) {
+      const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
+      return callback(new Error(msg), false);
+    }
+    return callback(null, true);
+  },
+  credentials: true, // important for cookies/session
 }));
 
 // test route

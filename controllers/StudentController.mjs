@@ -2,7 +2,8 @@ import {
   enterExamService,
   startExamAttemptService,
   resumeAttemptService,
-  submitExamService
+  submitExamService,
+  reportCheatService
 } from "../services/StudentService.mjs";
 
 /**
@@ -54,5 +55,24 @@ export const submitExam = async (req, res) => {
     res.json(attempt);
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+
+export const cheatReport = async (req, res) => {
+  try {
+    const { attemptId, type } = req.body;
+
+    const result = await reportCheatService({ attemptId, type });
+
+    res.status(200).json({
+      success: true,
+      ...result
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
   }
 };

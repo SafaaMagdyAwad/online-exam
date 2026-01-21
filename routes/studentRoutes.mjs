@@ -3,7 +3,8 @@ import {
   enterExam,
   startExamAttempt,
   resumeAttempt,
-  submitExam
+  submitExam,
+  cheatReport
 } from "../controllers/StudentController.mjs";
 
 const router = express.Router();
@@ -59,5 +60,12 @@ router.get("/resume", resumeAttempt);
  */
 
 router.post("/submit", submitExam);
-
+/**
+ * @swagger
+ * /api/student/cheat:
+ *   post:
+ *     summary: Report cheating activity  
+ *     tags: [Student]
+ */
+router.post("/cheat",cheatReport);
 export default router;

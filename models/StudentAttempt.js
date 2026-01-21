@@ -27,6 +27,29 @@ const StudentAttemptSchema = new mongoose.Schema(
         answer: Number
       }
     ],
+      // 🔴 Anti-Cheating
+    cheatingLogs: [
+      {
+        type: {
+          type: String, // TAB_SWITCH, WINDOW_BLUR, DEVTOOLS
+        },
+        time: {
+          type: Date,
+          default: Date.now
+        }
+      }
+    ],
+
+    cheatScore: {
+      type: Number,
+      default: 0
+    },
+
+    status: {
+      type: String,
+      enum: ["active", "flagged", "terminated"],
+      default: "active"
+    },
     score: Number,
     startedAt: Date,
     finishedAt: Date

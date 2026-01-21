@@ -122,3 +122,47 @@ export const submitExamService = async (attemptId, answers) => {
   await attempt.save();
   return attempt;
 };
+
+
+
+const CHEAT_POINTS = {
+  TAB_SWITCH: 2,
+  WINDOW_BLUR: 1,
+  DEVTOOLS: 3
+};
+
+export const reportCheatService = async ({ attemptId, type }) => {
+  if (!attemptId || !type) {
+    throw new Error("attemptId and type are required");
+  }
+
+  const attempt = await StudentAttempt.findById(attemptId);
+
+  if (!attempt) {
+    throw new Error("Attempt not found");
+  }
+
+  const points = CHEAT_POINTS[type] ?? 1;
+
+  // Log cheat
+  attempt.cheatingLogs.push({
+    type,
+    time: new Date()
+  });
+
+  attempt.cheatScore += points;
+
+  // Decide status
+  if (attempt.cheatScore >= 15) {
+    attempt.status = "terminated";
+  } else if (attempt.cheatScore >= 10) {
+    attempt.status = "flagged";
+  }
+
+  await attempt.save();
+
+  return {
+    cheatScore: attempt.cheatScore,
+    status: attempt.status
+  };
+};
