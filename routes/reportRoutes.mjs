@@ -1,7 +1,8 @@
 import express from "express";
 import {
   getExamReport,
-  getExamStats
+  getExamStats,
+  getHardestQuestions
 } from "../controllers/ReportController.mjs";
 import authTeacher from "../middlewares/authTeacher.mjs";
 
@@ -47,5 +48,9 @@ router.get(
   "/:examId/stats",
   getExamStats
 );
+
+router.get('/hardest/:examId',getHardestQuestions);
+
+
 
 export default router;

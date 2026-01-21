@@ -8,6 +8,8 @@ export const addQuestionService = async (teacherId, examId, questionData) => {
     _id: examId,
     teacherId
   });
+ 
+console.log("exam:", exam);
 
   if (!exam) {
     throw new Error("Exam not found or unauthorized");

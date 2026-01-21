@@ -31,6 +31,7 @@ const ExamSchema = new mongoose.Schema(
     questions: [
       {
         question: String,
+        questionImage: {type: String, default: null, required: false},
         options: [String],
         correctAnswer: Number // index of the correct answer
       }

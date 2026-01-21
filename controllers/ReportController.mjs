@@ -1,6 +1,7 @@
 import {
   getExamReportService,
-  getExamStatsService
+  getExamStatsService,
+  getHardestQuestionsService
 } from "../services/ReportService.mjs";
 
 /**
@@ -50,3 +51,25 @@ export const getExamStats = async (req, res) => {
     });
   }
 };
+
+
+export const getHardestQuestions = async (req, res) => {
+  try {
+    const { examId } = req.params;
+
+    const stats = await getHardestQuestionsService(examId);
+
+    res.json({
+      success: true,
+      stats
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: "Failed to load hardest questions"
+    });
+  }
+};
+
+
+

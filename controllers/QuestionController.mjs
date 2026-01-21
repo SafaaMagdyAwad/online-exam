@@ -1,3 +1,4 @@
+import e from "express";
 import {
   addQuestionService,
   updateQuestionService,
@@ -11,12 +12,12 @@ import {
  */
 export const addQuestion = async (req, res) => {
   try {
-    const question = await addQuestionService(
-      req.user.id,
-      req.params.examId,
-      req.body
-    );
+    const teacherId = req.user.id;
+    const examId = req.params.examId;
+    const questionData = req.body;
+console.log(teacherId,",",examId,",",questionData);
 
+    const question = await addQuestionService(teacherId, examId, questionData);
     res.status(201).json({
       message: "Question added successfully",
       question
