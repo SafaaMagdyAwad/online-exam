@@ -39,7 +39,14 @@ const TeacherSchema = new mongoose.Schema(
     jopTitle:{
       type:String,
       required:true
-    }
+    },
+    // ✅ REQUIRED FOR RESET PASSWORD
+      resetPasswordToken: {
+        type: String
+      },
+      resetPasswordExpire: {
+        type: Date
+      }
   },
   { timestamps: true }
 );
