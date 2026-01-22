@@ -21,7 +21,7 @@ const generateToken = (id, role) => {
  */
 export const registerTeacher = async (req, res) => {
   try {
-    const { name, email, password, jopTitle } = req.body;
+    const { name, email, password, jopTitle,role } = req.body;
 
     // 1️⃣ Validation
     if (!name || !email || !password || !jopTitle) {
@@ -29,7 +29,7 @@ export const registerTeacher = async (req, res) => {
         message: "All fields are required"
       });
     }
-
+// if (!role){role="teacher"}
     if (password.length < 6) {
       return res.status(400).json({
         message: "Password must be at least 6 characters"
@@ -49,7 +49,8 @@ export const registerTeacher = async (req, res) => {
       name,
       email,
       password,
-      jopTitle
+      jopTitle,
+      role,
     });
 
     // 4️⃣ Response
