@@ -41,7 +41,7 @@ export const getExamReportService = async (
   const totalCount = await StudentAttempt.countDocuments(query); // إجمالي عدد النتائج
 
   const attempts = await StudentAttempt.find(query)
-    .select("studentName score startedAt finishedAt")
+    .select("studentName score startedAt finishedAt  cheatingLogs cheatScore cheatscore status")
     .sort({ score: -1 })
     .skip((page - 1) * limit) // تخطي الصفوف حسب الصفحة
     .limit(limit);            // عدد الصفوف لكل صفحة
