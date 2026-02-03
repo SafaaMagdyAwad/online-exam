@@ -40,7 +40,7 @@ export const updateTeacher = async (req, res) => {
     }
 
     // allowed fields
-    const allowedUpdates = ["name", "email", "phone", "password","jopTitle"];
+    const allowedUpdates = ["name", "email", "phone", "password","jobTitle"];
     const updates = {};
 
     allowedUpdates.forEach(field => {

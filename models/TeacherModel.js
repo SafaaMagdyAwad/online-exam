@@ -36,7 +36,7 @@ const TeacherSchema = new mongoose.Schema(
     logo: {
       type: String,
     },
-    jopTitle:{
+    jobTitle:{
       type:String,
       required:true
     },

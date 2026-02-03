@@ -47,6 +47,7 @@ app.use(cors({
   allowedHeaders: ["Content-Type","Authorization"],
   methods: ["GET","POST","PATCH","DELETE","OPTIONS"]
 }));
+app.use(express.urlencoded({ extended: true })); // optional, parses form data
 
 
 // test route

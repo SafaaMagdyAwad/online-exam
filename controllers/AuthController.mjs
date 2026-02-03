@@ -21,10 +21,10 @@ const generateToken = (id, role) => {
  */
 export const registerTeacher = async (req, res) => {
   try {
-    const { name, email, password, jopTitle } = req.body;
+    const { name, email, password, jobTitle } = req.body;
 
     // 1️⃣ Validation
-    if (!name || !email || !password || !jopTitle) {
+    if (!name || !email || !password || !jobTitle) {
       return res.status(400).json({
         message: "All fields are required"
       });
@@ -49,7 +49,7 @@ export const registerTeacher = async (req, res) => {
       name,
       email,
       password,
-      jopTitle,
+      jobTitle,
     });
 
     // 4️⃣ Response
@@ -60,7 +60,7 @@ export const registerTeacher = async (req, res) => {
         id: teacher._id,
         name: teacher.name,
         email: teacher.email,
-        jopTitle: teacher.jopTitle,
+        jobTitle: teacher.jobTitle,
         paid: teacher.paid,
         role: teacher.role
       }

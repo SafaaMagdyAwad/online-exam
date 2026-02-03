@@ -16,7 +16,6 @@ const router = express.Router();
  *   description: Authentication endpoints
  */
 
-
 /**
  * @swagger
  * /api/auth/register:
@@ -57,7 +56,18 @@ const router = express.Router();
  *                 message:
  *                   type: string
  *                   example: "Teacher registered successfully"
+ *       400:
+ *         description: Invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid or missing fields"
  */
+
 /**
  * @swagger
  * /api/auth/login:
@@ -80,7 +90,6 @@ const router = express.Router();
  *               password:
  *                 type: string
  *                 example: "Password123!"
- *              
  *     responses:
  *       200:
  *         description: Login successful

@@ -49,7 +49,7 @@ const createAdmin = async () => {
       email: "adminsafaa@gmail.com",
       password: "SafaaMagdy@123",
       role:"admin",
-      jopTitle:"admin"
+      jobTitle:"admin"
     });
 
     console.log("✅ Admin created successfully");
