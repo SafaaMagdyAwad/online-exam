@@ -11,95 +11,107 @@ import {
 import authTeacher from "../middlewares/authTeacher.mjs";
 
 const router = express.Router();
+
 /**
  * @swagger
  * tags:
- *   name: Exam
- *   description: Exam management
+ *   name: Exams
+ *   description: Teacher exams management
  */
 
-//get exam by id
 /**
  * @swagger
- * /api/exam/{id}:
+ * /api/exam/{examId}:
  *   get:
  *     summary: Get exam by ID
- *     tags: [Exam]
- *     security:
- *       - bearerAuth: []
+ *     tags: [Exams]
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: examId
+ *         schema:
+ *           type: string
  *         required: true
+ *         description: Exam ID
  *     responses:
  *       200:
- *         description: Exam details
+ *         description: Exam found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 exam:
+ *                   $ref: '#/components/schemas/Exam'
+ *       404:
+ *         description: Exam not found
+ *       500:
+ *         description: Server error
  */
-
 
 router.get("/:examId", getExamById);
 
+// Require authentication for all routes below
 router.use(authTeacher);
-
-// Create exam
-
 
 /**
  * @swagger
  * /api/exam:
  *   post:
- *     summary: Create exam
- *     tags: [Exam]
+ *     summary: Create a new exam
+ *     tags: [Exams]
  *     security:
  *       - bearerAuth: []
  *     requestBody:
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             type: object
- *             properties:
- *               title:
- *                 type: string
- *               duration:
- *                 type: number
- *               totalMarks:
- *                 type: number
+ *             $ref: '#/components/schemas/ExamInput'
+ *           example:
+ *             title: "electros ch2"
+ *             duration: 60
+ *             totalMarks: 100
+ *             instructions: "جاوب صح"
  *     responses:
  *       201:
- *         description: Exam created
+ *         description: Exam created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 exam:
+ *                   $ref: '#/components/schemas/Exam'
+ *       500:
+ *         description: Server error
  */
 
 router.post("/", createExam);
 
-// Get teacher exams
 /**
  * @swagger
  * /api/exam:
  *   get:
- *     summary: Get teacher exams with pagination
- *     description: Returns paginated exams created by the authenticated teacher
- *     tags:
- *       - Exams
+ *     summary: Get all exams for the logged-in teacher
+ *     tags: [Exams]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: query
  *         name: page
- *         required: false
  *         schema:
  *           type: integer
- *           default: 1
- *         description: Page number
+ *         description: Page number for pagination
  *       - in: query
  *         name: limit
- *         required: false
  *         schema:
  *           type: integer
- *           default: 5
  *         description: Number of exams per page
  *     responses:
  *       200:
- *         description: Exams fetched successfully
+ *         description: List of exams
  *         content:
  *           application/json:
  *             schema:
@@ -114,80 +126,163 @@ router.post("/", createExam);
  *                   properties:
  *                     total:
  *                       type: integer
- *                       example: 23
  *                     page:
  *                       type: integer
- *                       example: 1
  *                     limit:
  *                       type: integer
- *                       example: 5
  *                     totalPages:
  *                       type: integer
- *                       example: 5
- *       401:
- *         description: Unauthorized
  *       500:
  *         description: Server error
  */
 router.get("/", getMyExams);
 
-router.get("/", getMyExams);
-
-//update exam by id
+/**
+ * @swagger
+ * /api/exam/{examId}:
+ *   put:
+ *     summary: Update an exam by ID
+ *     tags: [Exams]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: examId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Exam ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/ExamInput'
+ *           example:
+ *             title: "electros ch1"
+ *             duration: 30
+ *             totalMarks: 110
+ *             instructions: "جاوب صح"
+ *     responses:
+ *       200:
+ *         description: Exam updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 exam:
+ *                   $ref: '#/components/schemas/Exam'
+ *       404:
+ *         description: Exam not found
+ *       500:
+ *         description: Server error
+ */
 router.put("/:examId", updateExamById);
 
-//update exam visibility
 /**
  * @swagger
- * /api/exam/{id}/active:
+ * /api/exam/{examId}/active:
  *   get:
- *     summary: Toggle exam availability
- *     tags: [Exam]
+ *     summary: Toggle exam active status
+ *     tags: [Exams]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: examId
+ *         schema:
+ *           type: string
  *         required: true
+ *         description: Exam ID
  *     responses:
  *       200:
- *         description: Exam status toggled
+ *         description: Exam active status updated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 exam:
+ *                   $ref: '#/components/schemas/Exam'
+ *       404:
+ *         description: Exam not found
+ *       500:
+ *         description: Server error
  */
-
 router.get("/:examId/active", updateExamVById);
-// Generate access code
+
 /**
  * @swagger
- * /api/exam/{id}/code:
+ * /api/exam/{examId}/code:
  *   post:
- *     summary: Generate exam code
- *     tags: [Exam]
+ *     summary: Generate an access code for an exam
+ *     tags: [Exams]
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - in: path
- *         name: id
+ *         name: examId
+ *         schema:
+ *           type: string
  *         required: true
+ *         description: Exam ID
  *     responses:
- *       200:
- *         description: Code generated
+ *       201:
+ *         description: Access code generated
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 code:
+ *                   type: string
+ *       500:
+ *         description: Server error
  */
-
 router.post("/:examId/code", generateExamCode);
 
-//delete exam
 /**
  * @swagger
- * /api/exam/{id}:
+ * /api/exam/{examId}:
  *   delete:
- *     summary: Delete exam
- *     tags: [Exam]
+ *     summary: Delete an exam by ID
+ *     tags: [Exams]
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: examId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Exam ID
  *     responses:
  *       200:
- *         description: Exam deleted
+ *         description: Exam deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 exam:
+ *                   $ref: '#/components/schemas/Exam'
+ *       404:
+ *         description: Exam not found
+ *       500:
+ *         description: Server error
  */
 
+
 router.delete("/:examId", deleteExam);
+
+
 export default router;

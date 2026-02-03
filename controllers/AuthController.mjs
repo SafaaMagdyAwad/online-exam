@@ -29,7 +29,6 @@ export const registerTeacher = async (req, res) => {
         message: "All fields are required"
       });
     }
-// if (!role){role="teacher"}
     if (password.length < 6) {
       return res.status(400).json({
         message: "Password must be at least 6 characters"
