@@ -16,6 +16,7 @@ const router = express.Router();
  *   description: Authentication endpoints
  */
 
+
 /**
  * @swagger
  * /api/auth/register:
@@ -28,20 +29,35 @@ const router = express.Router();
  *         application/json:
  *           schema:
  *             type: object
- *             required: [name, email, password]
+ *             required:
+ *               - name
+ *               - email
+ *               - password
  *             properties:
  *               name:
  *                 type: string
+ *                 example: "John Doe"
  *               email:
  *                 type: string
+ *                 example: "john.doe@example.com"
  *               password:
  *                 type: string
+ *                 example: "Password123!"
+ *               jobTitle:
+ *                 type: string
+ *                 example: "English teacher"
  *     responses:
  *       201:
  *         description: Teacher registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Teacher registered successfully"
  */
-router.post("/register", registerTeacher);
-
 /**
  * @swagger
  * /api/auth/login:
@@ -54,17 +70,42 @@ router.post("/register", registerTeacher);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [email, password]
+ *             required:
+ *               - email
+ *               - password
  *             properties:
  *               email:
  *                 type: string
+ *                 example: "john.doe@example.com"
  *               password:
  *                 type: string
+ *                 example: "Password123!"
+ *              
  *     responses:
  *       200:
  *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                 message:
+ *                   type: string
+ *                   example: "Login successful"
+ *       401:
+ *         description: Invalid credentials
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid email or password"
  */
-router.post("/login", loginTeacher);
 
 /**
  * @swagger
@@ -78,15 +119,34 @@ router.post("/login", loginTeacher);
  *         application/json:
  *           schema:
  *             type: object
- *             required: [email]
+ *             required:
+ *               - email
  *             properties:
  *               email:
  *                 type: string
+ *                 example: "john.doe@example.com"
  *     responses:
  *       200:
- *         description: Reset password link sent to email
+ *         description: Reset password link sent
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Reset password link sent to your email"
+ *       404:
+ *         description: Email not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Teacher with this email not found"
  */
-router.post("/forgot-password", forgotPassword);
 
 /**
  * @swagger
@@ -98,23 +158,93 @@ router.post("/forgot-password", forgotPassword);
  *       - in: path
  *         name: token
  *         required: true
+ *         description: Reset password token
  *         schema:
  *           type: string
+ *           example: "abc123def456ghi789"
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required: [password]
+ *             required:
+ *               - password
  *             properties:
  *               password:
  *                 type: string
+ *                 example: "NewPassword123!"
  *     responses:
  *       200:
  *         description: Password reset successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Password reset successfully"
+ *       400:
+ *         description: Invalid or expired token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid or expired token"
  */
-router.post("/reset-password/:token", resetPassword);
 
-router.post('/google-login', googleLogin);
+/**
+ * @swagger
+ * /api/auth/google-login:
+ *   post:
+ *     summary: Login with Google
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - tokenId
+ *             properties:
+ *               tokenId:
+ *                 type: string
+ *                 example: "Google-OAuth-Token-Here"
+ *     responses:
+ *       200:
+ *         description: Google login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                 message:
+ *                   type: string
+ *                   example: "Google login successful"
+ *       401:
+ *         description: Invalid Google token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Invalid Google token"
+ */
+
+router.post("/register", registerTeacher);
+router.post("/login", loginTeacher);
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password/:token", resetPassword);
+router.post("/google-login", googleLogin);
+
 export default router;

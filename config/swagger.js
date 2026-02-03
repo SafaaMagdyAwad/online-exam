@@ -13,10 +13,23 @@ const swaggerOptions = {
       version: "1.0.0",
       description: "API documentation for Online Exam project",
     },
-    servers: [
+   servers: [
+  { url: 'https://online-exam-lemon.vercel.app', description: 'Production server' },
+  { url: 'http://localhost:3000', description: 'Local server' }, // ✅ include http://
+],
+     components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description: "Enter your JWT token here. Example: Bearer <token>",
+        },
+      },
+    },
+    security: [
       {
-        url: 'https://online-exam-lemon.vercel.app',
-        description: 'Production server',
+        bearerAuth: [],
       },
     ],
   },

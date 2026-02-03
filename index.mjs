@@ -23,21 +23,31 @@ const app = express();
 app.use(express.json());
 
 const allowedOrigins = [
+  "http://localhost:3000",    //swagger ui local
+  "https://online-exam-lemon.vercel.app", // Swagger deployed origin
   "http://localhost:5173",       // your dev frontend
   "https://online-exam-front.vercel.app" // production frontend
 ];
 
 app.use(cors({
   origin: function(origin, callback){
-    if (!origin) return callback(null, true); // allow non-browser requests like Postman
-    if (allowedOrigins.indexOf(origin) === -1) {
-      const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
-      return callback(new Error(msg), false);
+    if (!origin) return callback(null, true); // allow Postman
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "https://online-exam-front.vercel.app",
+      "https://online-exam-lemon.vercel.app" // Swagger deployed
+    ];
+    if (!allowedOrigins.includes(origin)) {
+      return callback(new Error(`CORS policy: origin ${origin} not allowed`), false);
     }
     return callback(null, true);
   },
-  credentials: true, // important for cookies/session
+  credentials: true,
+  allowedHeaders: ["Content-Type","Authorization"],
+  methods: ["GET","POST","PATCH","DELETE","OPTIONS"]
 }));
+
 
 // test route
 app.get("/", (req, res) => res.json({ message: "API is running..." }));
@@ -64,8 +74,8 @@ app.use(
 // MongoDB connection
 const uri = process.env.MONGO_URI;
 mongoose.connect(uri)
-    .then(() => console.log('MongoDB connected ✅'))
-    .catch(err => console.error('MongoDB connection error ❌', err));
+  .then(() => console.log('MongoDB connected ✅'))
+  .catch(err => console.error('MongoDB connection error ❌', err));
 
 // Only listen if not running on Vercel
 if (process.env.NODE_ENV !== 'production') {

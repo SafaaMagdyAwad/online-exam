@@ -21,7 +21,7 @@ const generateToken = (id, role) => {
  */
 export const registerTeacher = async (req, res) => {
   try {
-    const { name, email, password, jopTitle,role } = req.body;
+    const { name, email, password, jopTitle } = req.body;
 
     // 1️⃣ Validation
     if (!name || !email || !password || !jopTitle) {
@@ -50,7 +50,6 @@ export const registerTeacher = async (req, res) => {
       email,
       password,
       jopTitle,
-      role,
     });
 
     // 4️⃣ Response
