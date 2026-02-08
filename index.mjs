@@ -22,12 +22,7 @@ const app = express();
 
 app.use(express.json());
 
-const allowedOrigins = [
-  "http://localhost:3000",    //swagger ui local
-  "https://online-exam-lemon.vercel.app", // Swagger deployed origin
-  "http://localhost:5173",       // your dev frontend
-  "https://online-exam-front.vercel.app" // production frontend
-];
+
 
 app.use(cors({
   origin: function(origin, callback){
