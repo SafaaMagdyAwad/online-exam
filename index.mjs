@@ -31,7 +31,7 @@ app.use(cors({
       "http://localhost:3000",
       "http://localhost:5173",
       "https://online-exam-front.vercel.app",
-      "https://online-exam-lemon.vercel.app" // Swagger deployed
+      "https://online-exam-five-chi.vercel.app" // Swagger deployed
     ];
     if (!allowedOrigins.includes(origin)) {
       return callback(new Error(`CORS policy: origin ${origin} not allowed`), false);
