@@ -14,7 +14,7 @@ const swaggerOptions = {
       description: "API documentation for Online Exam project",
     },
    servers: [
-  { url: 'https://online-exam-lemon.vercel.app', description: 'Production server' },
+  { url: 'https://online-exam-five-chi.vercel.app', description: 'Production server' },
   { url: 'http://localhost:3000', description: 'Local server' }, // ✅ include http://
 ],
      components: {
