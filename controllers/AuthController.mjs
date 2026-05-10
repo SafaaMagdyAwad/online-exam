@@ -2,6 +2,7 @@ import Teacher from "../models/TeacherModel.js";
 import jwt from "jsonwebtoken";
 import { randomBytes, createHash } from "crypto";
 import sendEmail from "../utils/sendEmail.mjs";
+import { log } from "console";
 
 /**
  * Generate JWT Token
@@ -86,12 +87,13 @@ export const loginTeacher = async (req, res) => {
         message: "Email and password are required"
       });
     }
+console.log("validation good");
 
     // 2️⃣ Find teacher + password
     const teacher = await Teacher
       .findOne({ email })
       .select("+password");
-
+console.log("teacher found:", teacher);
     if (!teacher) {
       return res.status(401).json({
         message: "Invalid email or password"
