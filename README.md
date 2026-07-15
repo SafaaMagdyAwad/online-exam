@@ -112,7 +112,8 @@ Admin routes: /api/admin/...
 
 express
 
-mongoose
+mongoos
+
 
 dotenv
 
@@ -133,3 +134,6 @@ Prevent multiple attempts per student per exam.
 Automatic calculation of remaining exam time on refresh.
 
 Full reports exportable and printable for teachers.
+
+TODO
+add the ability to correct long answer questions using ai
